@@ -17,7 +17,7 @@ import java.util.Date;
 public class PhotoGalleryController {
 
     @Autowired
-    PhotoGallery board;
+    PhotoGalleryService board;
 
     private final String basePath = "/tmp/upload/";
 
@@ -68,13 +68,6 @@ public class PhotoGalleryController {
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String addTo(Article article, @RequestParam("file") MultipartFile file) {
-        saveFile(article, file);
-
-        board.add(article);
-        return "redirect:/index.action";
-    }
-
-    private void saveFile(Article article, @RequestParam("file") MultipartFile file) {
         String saveName = String.valueOf(new Date().getTime());
 
         OutputStream fos = null;
@@ -95,16 +88,43 @@ public class PhotoGalleryController {
         article.setFilename(file.getOriginalFilename());
         article.setSaveName(saveName);
         article.setFileSize(file.getSize());
+
+        board.add(article);
+        return "redirect:/index.action";
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public String update(Article article, @RequestParam("file") MultipartFile file) {
-        if (file != null) {
+        if(file ==null) {
             saveFile(article, file);
         }
-
         board.update(article);
         return "redirect:/index.action";
+    }
+
+    private void saveFile(Article article, @RequestParam("file") MultipartFile file) {
+        if (file != null) {
+            String saveName = String.valueOf(new Date().getTime());
+
+            OutputStream fos = null;
+
+            try {
+                fos = new FileOutputStream(basePath + File.separator + saveName);
+
+                fos.write(file.getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            article.setFilename(file.getOriginalFilename());
+            article.setSaveName(saveName);
+            article.setFileSize(file.getSize());
+        }
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.GET)

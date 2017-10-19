@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class PhotoGallery {
+public class PhotoGalleryService {
     PhotoGalleryDao dao = new PhotoGalleryDao();
 
     public int add(Article article) {

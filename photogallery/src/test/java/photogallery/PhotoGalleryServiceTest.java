@@ -4,15 +4,15 @@ import java.util.List;
 
 import junit.framework.TestCase;
 
-public class PhotoGalleryTest extends TestCase {
+public class PhotoGalleryServiceTest extends TestCase {
     public void testAdd() {
         Article article = new Article();
         article.setWriter("kenu");
         article.setTitle("title");
         article.setContent("content");
 
-        PhotoGallery photoGallery = new PhotoGallery();
-        int add = photoGallery.add(article);
+        PhotoGalleryService photoGalleryService = new PhotoGalleryService();
+        int add = photoGalleryService.add(article);
         assertTrue(add > 0);
     }
 
@@ -22,11 +22,11 @@ public class PhotoGalleryTest extends TestCase {
         article.setTitle("title");
         article.setContent("content");
 
-        PhotoGallery photoGallery = new PhotoGallery();
-        int add = photoGallery.add(article);
+        PhotoGalleryService photoGalleryService = new PhotoGalleryService();
+        int add = photoGalleryService.add(article);
         assertTrue(add > 0);
 
-        Article article2 = photoGallery.get(add);
+        Article article2 = photoGalleryService.get(add);
         assertEquals(article.getWriter(), article2.getWriter());
 
     }
@@ -37,13 +37,13 @@ public class PhotoGalleryTest extends TestCase {
         article.setTitle("title");
         article.setContent("content");
 
-        PhotoGallery photoGallery = new PhotoGallery();
-        int add = photoGallery.add(article);
+        PhotoGalleryService photoGalleryService = new PhotoGalleryService();
+        int add = photoGalleryService.add(article);
 
-        long sizeBefore = photoGallery.size();
-        boolean result = photoGallery.delete(add);
+        long sizeBefore = photoGalleryService.size();
+        boolean result = photoGalleryService.delete(add);
         assertTrue(result);
-        long sizeAfter = photoGallery.size();
+        long sizeAfter = photoGalleryService.size();
         assertEquals(1, sizeBefore - sizeAfter);
     }
 
@@ -54,15 +54,15 @@ public class PhotoGalleryTest extends TestCase {
         article.setTitle("title");
         article.setContent("content");
 
-        PhotoGallery photoGallery = new PhotoGallery();
-        int add = photoGallery.add(article);
+        PhotoGalleryService photoGalleryService = new PhotoGalleryService();
+        int add = photoGalleryService.add(article);
         assertTrue(add > 0);
 
-        Article article2 = photoGallery.get(add);
+        Article article2 = photoGalleryService.get(add);
         article2.setContent("content changed");
-        photoGallery.update(article2);
+        photoGalleryService.update(article2);
 
-        Article article3 = photoGallery.get(add);
+        Article article3 = photoGalleryService.get(add);
         assertNotSame(article2, article3);
         assertEquals("content changed", article3.getContent());
 
@@ -79,14 +79,14 @@ public class PhotoGalleryTest extends TestCase {
         article2.setTitle("title2");
         article2.setContent("content2");
 
-        PhotoGallery photoGallery = new PhotoGallery();
-        int before = photoGallery.getList().size();
-        int add = photoGallery.add(article);
+        PhotoGalleryService photoGalleryService = new PhotoGalleryService();
+        int before = photoGalleryService.getList().size();
+        int add = photoGalleryService.add(article);
         assertTrue(add > 0);
-        int add1 = photoGallery.add(article2);
+        int add1 = photoGalleryService.add(article2);
         assertTrue(add1 > 0);
 
-        List<Article> list = photoGallery.getList();
+        List<Article> list = photoGalleryService.getList();
         int size = list.size();
         assertEquals(2, size - before);
 
